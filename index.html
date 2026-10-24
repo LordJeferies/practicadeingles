@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Dubai Border Pass • Duolingo Immigration Coach</title>
+  
+  <!-- PWA & Mobile Native Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Dubai Pass">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="Aprende y practica tu diálogo de migración en Dubái (visita a hijo ingeniero y nieto por 1 mes) estilo Duolingo.">
+
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tipografías estilo Duolingo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #0b1120;
+      color: #f8fafc;
+      user-select: none;
+      overscroll-behavior-y: none;
+    }
+
+    .font-duo {
+      font-family: 'Fredoka', sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* Botones 3D táctiles clásicos de Duolingo */
+    .duo-btn {
+      position: relative;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+    }
+    .duo-btn:active:not(:disabled) {
+      transform: translateY(4px);
+    }
+    .duo-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .duo-green {
+      background-color: #58cc02;
+      box-shadow: 0 4px 0 #46a302;
+      color: #052e16;
+    }
+    .duo-green:active:not(:disabled) {
+      box-shadow: 0 0px 0 #46a302;
+    }
+
+    .duo-blue {
+      background-color: #1cb0f6;
+      box-shadow: 0 4px 0 #1899d6;
+      color: #082f49;
+    }
+    .duo-blue:active:not(:disabled) {
+      box-shadow: 0 0px 0 #1899d6;
+    }
+
+    .duo-amber {
+      background-color: #ffc800;
+      box-shadow: 0 4px 0 #d9a300;
+      color: #422006;
+    }
+    .duo-amber:active:not(:disabled) {
+      box-shadow: 0 0px 0 #d9a300;
+    }
+
+    .duo-rose {
+      background-color: #ff4b4b;
+      box-shadow: 0 4px 0 #ea2b2b;
+      color: #ffffff;
+    }
+    .duo-rose:active:not(:disabled) {
+      box-shadow: 0 0px 0 #ea2b2b;
+    }
+
+    .duo-card-btn {
+      background-color: #1e293b;
+      border: 2px solid #334155;
+      box-shadow: 0 4px 0 #0f172a;
+      color: #f1f5f9;
+    }
+    .duo-card-btn:active:not(:disabled) {
+      transform: translateY(4px);
+      box-shadow: 0 0px 0 #0f172a;
+    }
+    .duo-card-btn.selected {
+      background-color: #164e63;
+      border-color: #22d3ee;
+      box-shadow: 0 4px 0 #0891b2;
+      color: #ecfeff;
+    }
+
+    /* Nodos circulares del mapa de Duolingo */
+    .path-node {
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .path-node:active {
+      transform: scale(0.92) translateY(4px);
+    }
+
+    /* Animación micrófono grabando */
+    @keyframes pulse-mic {
+      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .mic-recording {
+      animation: pulse-mic 1.4s infinite;
+      background-color: #ef4444 !important;
+      border-color: #fca5a5 !important;
+      color: white !important;
+    }
+
+    /* Scrollbars limpias para experiencia móvil */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="h-[100dvh] w-full flex flex-col bg-[#0b1120] overflow-hidden">
+
+  <!-- ========================================================================= -->
+  <!-- 1. PANTALLA DE BIENVENIDA (ONBOARDING, NOMBRE Y ACCESO AL TUTORIAL)       -->
+  <!-- ========================================================================= -->
+  <section id="welcome-screen" class="fixed inset-0 z-50 bg-[#0b1120] flex flex-col justify-between overflow-y-auto px-5 py-6">
+    <div class="max-w-md mx-auto w-full my-auto flex flex-col items-center text-center space-y-5">
+      
+      <!-- Logo / Emblema estilo Duolingo DXB -->
+      <div class="relative pt-2">
+        <div class="w-24 h-24 rounded-[28px] bg-gradient-to-b from-emerald-400 to-emerald-600 p-1 shadow-2xl shadow-emerald-500/20 mx-auto flex items-center justify-center border-b-4 border-emerald-700">
+          <div class="w-full h-full bg-slate-900 rounded-[24px] flex items-center justify-center text-5xl">
+            🛂
+          </div>
+        </div>
+        <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 font-duo font-bold text-[11px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow">
+          🇦🇪 Aeropuerto DXB
+        </span>
+      </div>
+
+      <div>
+        <h1 class="font-duo font-bold text-3xl text-white tracking-tight">
+          Dubai Border Coach
+        </h1>
+        <p class="text-sm text-slate-300 mt-1 leading-relaxed">
+          Aprende, pronuncia y domina tu entrevista de migración en Dubái paso a paso como en Duolingo.
+        </p>
+      </div>
+
+      <!-- Tarjeta de Personalización de Viajero -->
+      <div class="w-full bg-slate-900 border-2 border-slate-800 rounded-3xl p-4 text-left shadow-xl space-y-3">
+        <div>
+          <label for="welcome-name-input" class="block text-xs font-extrabold uppercase tracking-wider text-emerald-400 mb-1.5">
+            <i class="fa-solid fa-user-check mr-1"></i> ¿Cómo se llama quien va a practicar?
+          </label>
+          <input 
+            id="welcome-name-input" 
+            type="text" 
+            maxlength="28"
+            placeholder="Escribe tu nombre (ej. Carmen, José, Mamá...)"
+            class="w-full bg-slate-950 border-2 border-slate-700 focus:border-emerald-400 rounded-2xl px-4 py-3 text-base font-bold text-white placeholder-slate-500 focus:outline-none transition-colors"
+          />
+          <!-- Botones rápidos de sugerencia de nombre -->
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-[11px] text-slate-400 self-center mr-1">Rápido:</span>
+            <button type="button" onclick="setQuickName('Mamá')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-xl font-bold border border-slate-700">Mamá</button>
+            <button type="button" onclick="setQuickName('Papá')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-xl font-bold border border-slate-700">Papá</button>
+            <button type="button" onclick="setQuickName('Viajero')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-xl font-bold border border-slate-700">Viajero</button>
+          </div>
+        </div>
+
+        <!-- Datos de la situación real pre-cargada -->
+        <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-3 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-400">
+              <i class="fa-solid fa-plane-arrival mr-1"></i> Tu Caso de Viaje Configurado:
+            </span>
+            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-md font-bold">100% Realista</span>
+          </div>
+          <ul class="text-xs text-slate-300 space-y-1 pl-1">
+            <li>👨‍👦 <strong>Motivo:</strong> Visitar a tu hijo y a tu nieto.</li>
+            <li>👷‍♂️ <strong>Tu hijo:</strong> Vive en Dubái con residencia y es <em>Ingeniero</em>.</li>
+            <li>🗓️ <strong>Estancia:</strong> Aproximadamente 1 mes (con boleto de regreso).</li>
+            <li>🏢 <strong>Alojamiento:</strong> Departamento de tu hijo + copia de su <em>Emirates ID</em>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Botones Principales de Bienvenida -->
+      <div class="w-full space-y-3 pt-1">
+        <!-- Botón de Cómo Usar / Tutorial Interactivo -->
+        <button 
+          type="button"
+          onclick="openTutorial(0)" 
+          class="w-full py-3.5 px-4 rounded-2xl duo-btn duo-blue font-duo font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2"
+        >
+          <i class="fa-solid fa-circle-play text-base"></i>
+          <span>¿Cómo usar la app? (Ver Tutorial)</span>
+        </button>
+
+        <!-- Botón de Empezar a Practicar -->
+        <button 
+          type="button"
+          onclick="enterMainApp()" 
+          class="w-full py-4 px-5 rounded-2xl duo-btn duo-green font-duo font-bold text-lg uppercase tracking-wider flex items-center justify-center gap-2"
+        >
+          <span>¡Empezar a Practicar!</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <div class="text-center text-[11px] text-slate-500 pt-4">
+      Optimizado para celulares • Incluye voz nativa Lenta 🐢 y Normal 🔊
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MODAL TUTORIAL INTERACTIVO PASO A PASO (SLIDES + PRUEBA DE AUDIO)       -->
+  <!-- ========================================================================= -->
+  <div id="tutorial-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border-2 border-slate-700 rounded-3xl max-w-md w-full p-5 shadow-2xl flex flex-col justify-between max-h-[90dvh]">
+      
+      <!-- Header Tutorial -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </span>
+          <h3 class="font-duo font-bold text-base text-white">Guía de Uso Paso a Paso</h3>
+        </div>
+        <button onclick="closeTutorial()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Cuerpo dinámico del Slide -->
+      <div id="tutorial-slide-body" class="py-5 overflow-y-auto text-center space-y-4 my-auto">
+        <!-- Rellenado por JS -->
+      </div>
+
+      <!-- Indicadores de página y Botones Anterior/Siguiente -->
+      <div class="border-t border-slate-800 pt-3 space-y-3">
+        <div id="tutorial-dots" class="flex justify-center gap-2"></div>
+        <div class="flex gap-2">
+          <button id="tut-prev-btn" onclick="changeTutorialSlide(-1)" class="w-1/3 py-3 rounded-xl bg-slate-800 text-slate-300 font-duo font-bold text-xs uppercase">
+            Anterior
+          </button>
+          <button id="tut-next-btn" onclick="changeTutorialSlide(1)" class="w-2/3 py-3 rounded-xl duo-btn duo-green font-duo font-bold text-xs uppercase">
+            Siguiente
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. CABECERA FIJA DE LA APP (PERFIL, RACHA, CORAZONES, XP Y COMPARTIR)     -->
+  <!-- ========================================================================= -->
+  <header class="bg-slate-900/95 border-b border-slate-800 px-3.5 py-2.5 shrink-0 z-20" style="padding-top: calc(0.6rem + var(--safe-top));">
+    <div class="max-w-lg mx-auto flex items-center justify-between gap-2">
+      
+      <!-- Botón Perfil / Cambiar nombre o abrir bienvenida -->
+      <button onclick="openWelcomeScreen()" class="flex items-center gap-2 text-left bg-slate-800/90 hover:bg-slate-800 px-2.5 py-1.5 rounded-2xl border border-slate-700 active:scale-95 transition-transform">
+        <span class="text-lg">🇦🇪</span>
+        <div>
+          <div class="flex items-center gap-1">
+            <span id="top-traveler-name" class="font-duo font-bold text-xs sm:text-sm text-white max-w-[95px] truncate">Viajero</span>
+            <i class="fa-solid fa-pen text-[9px] text-emerald-400"></i>
+          </div>
+          <span class="block text-[9px] text-slate-400 leading-none">Cambiar perfil</span>
+        </div>
+      </button>
+
+      <!-- Estadísticas Duolingo -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Racha -->
+        <div class="flex items-center gap-1 bg-slate-800/90 px-2.5 py-1 rounded-xl border border-slate-700" title="Racha de práctica">
+          <i class="fa-solid fa-fire text-amber-400 text-xs"></i>
+          <span id="stat-streak" class="font-duo font-bold text-xs text-amber-300">1</span>
+        </div>
+        <!-- XP -->
+        <div class="flex items-center gap-1 bg-slate-800/90 px-2.5 py-1 rounded-xl border border-slate-700" title="Puntos de experiencia">
+          <i class="fa-solid fa-bolt text-sky-400 text-xs"></i>
+          <span id="stat-xp" class="font-duo font-bold text-xs text-sky-300">0 XP</span>
+        </div>
+        <!-- Vidas -->
+        <div class="flex items-center gap-1 bg-slate-800/90 px-2.5 py-1 rounded-xl border border-slate-700" title="Corazones (toca para recargar)" onclick="refillHearts()">
+          <i class="fa-solid fa-heart text-rose-500 text-xs"></i>
+          <span id="stat-hearts" class="font-duo font-bold text-xs text-rose-400">5</span>
+        </div>
+        <!-- Botón de Ayuda / Tutorial rápido -->
+        <button onclick="openTutorial(0)" class="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 text-sky-400 flex items-center justify-center active:scale-95" title="Cómo usar">
+          <i class="fa-solid fa-circle-question text-sm"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 4. CONTENEDOR CENTRAL SCROLLABLE (CAMBIA SEGÚN LA PESTAÑA ACTIVA)          -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 overflow-y-auto no-scrollbar relative">
+    <div class="max-w-lg mx-auto w-full px-4 py-4 pb-24">
+
+      <!-- =============================================================== -->
+      <!-- VISTA A: MAPA DE APRENDIZAJE DUOLINGO (SKILL TREE DE 6 NIVELES)  -->
+      <!-- =============================================================== -->
+      <section id="tab-view-path" class="space-y-5">
+        
+        <!-- Banner de Unidad 1 -->
+        <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-4 shadow-lg border-b-4 border-emerald-800 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-100 bg-black/20 px-2 py-0.5 rounded-md">
+              Unidad 1 • Aeropuerto de Dubái
+            </span>
+            <h2 class="font-duo font-bold text-lg sm:text-xl text-white mt-1">
+              Control Migratorio Completo
+            </h2>
+            <p class="text-xs text-emerald-50">
+              Visita a tu hijo ingeniero y a tu nieto por 1 mes
+            </p>
+          </div>
+          <button onclick="startFullPracticeLesson()" class="duo-btn duo-amber px-3.5 py-2.5 rounded-2xl font-duo font-bold text-xs uppercase shrink-0 flex items-center gap-1.5 shadow">
+            <i class="fa-solid fa-play"></i>
+            <span>Todo</span>
+          </button>
+        </div>
+
+        <!-- Instrucción rápida -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 flex items-center justify-between text-xs text-slate-300">
+          <div class="flex items-center gap-2">
+            <span class="text-base">👆</span>
+            <span>Toca cualquier círculo para entrenar esa pregunta del oficial o haz el examen completo.</span>
+          </div>
+          <span id="completed-badge" class="font-duo font-bold text-emerald-400 shrink-0 ml-2">0/6 listos</span>
+        </div>
+
+        <!-- Camino de Nodos estilo Duolingo -->
+        <div id="duolingo-path-container" class="py-4 flex flex-col items-center space-y-6 relative">
+          <!-- Renderizado dinámicamente -->
+        </div>
+
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VISTA B: SIMULADOR DE DIÁLOGO CON OFICIAL (GUIADO + IA GEMINI)   -->
+      <!-- =============================================================== -->
+      <section id="tab-view-roleplay" class="hidden space-y-3">
+        
+        <!-- Selector de Modo de Simulación -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-3 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-9 h-9 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-lg">🛂</span>
+              <div>
+                <h2 class="font-duo font-bold text-sm text-white">Simulador de Ventanilla DXB</h2>
+                <p class="text-[11px] text-slate-400">Practica el diálogo seguido de principio a fin</p>
+              </div>
+            </div>
+            <button onclick="resetSimulatorConversation()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl font-bold border border-slate-700">
+              <i class="fa-solid fa-rotate-left mr-1"></i> Reiniciar
+            </button>
+          </div>
+
+          <!-- Switch entre Modo Guiado Oficial vs Modo IA Flexible -->
+          <div class="grid grid-cols-2 gap-1.5 bg-slate-950 p-1 rounded-2xl border border-slate-800 text-xs">
+            <button id="sim-mode-scripted" onclick="setSimulatorMode('scripted')" class="py-2 px-2 rounded-xl font-duo font-bold bg-emerald-500 text-slate-950 transition-all">
+              📋 Guion Exacto (6 Pasos)
+            </button>
+            <button id="sim-mode-ai" onclick="setSimulatorMode('ai')" class="py-2 px-2 rounded-xl font-duo font-bold text-slate-400 hover:text-white transition-all">
+              🤖 Oficial IA + Corrección
+            </button>
+          </div>
+        </div>
+
+        <!-- Ventana de Mensajes del Chat -->
+        <div id="sim-chat-box" class="bg-slate-950/90 border-2 border-slate-800 rounded-3xl p-3.5 h-[50dvh] overflow-y-auto space-y-3 scroll-smooth">
+          <!-- Burbujas del chat -->
+        </div>
+
+        <!-- Ayuda de Respuesta Sugerida para no quedarse en blanco -->
+        <div id="sim-suggestion-bar" class="bg-slate-900/95 border border-slate-800 rounded-2xl p-2.5 flex items-center justify-between gap-2">
+          <div class="text-xs overflow-hidden">
+            <span class="text-[10px] uppercase font-extrabold text-amber-400 block">💡 Respuesta sugerida para este turno:</span>
+            <p id="sim-suggested-text" class="text-slate-200 font-semibold truncate">"Good evening, Officer. Here they are."</p>
+          </div>
+          <div class="flex items-center gap-1 shrink-0">
+            <button onclick="speakCurrentSuggestion(0.88)" class="w-8 h-8 rounded-xl bg-slate-800 text-emerald-400 flex items-center justify-center" title="Escuchar sugerencia">
+              <i class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+            <button onclick="useSuggestedInRoleplay()" class="px-2.5 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-duo font-bold text-[11px]">
+              Usar
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra de Entrada de Voz / Texto -->
+        <div class="bg-slate-900 border-2 border-slate-800 rounded-2xl p-2 flex items-center gap-2">
+          <button 
+            id="sim-mic-btn" 
+            onclick="toggleSpeechRecognition('sim')" 
+            class="w-11 h-11 rounded-xl bg-slate-800 hover:bg-slate-700 text-rose-400 border border-slate-700 flex items-center justify-center shrink-0 transition-all"
+            title="Hablar en inglés"
+          >
+            <i class="fa-solid fa-microphone text-base"></i>
+          </button>
+          <input 
+            id="sim-user-input" 
+            type="text" 
+            placeholder="Habla con el micrófono o escribe en inglés..."
+            onkeydown="if(event.key==='Enter') sendSimulatorMessage()"
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400"
+          />
+          <button 
+            id="sim-send-btn"
+            onclick="sendSimulatorMessage()" 
+            class="px-4 py-2.5 rounded-xl duo-btn duo-green font-duo font-bold text-xs uppercase shrink-0"
+          >
+            Enviar
+          </button>
+        </div>
+
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VISTA C: DIÁLOGO COMPLETO, PRONUNCIACIÓN Y VOCABULARIO CLAVE     -->
+      <!-- =============================================================== -->
+      <section id="tab-view-guide" class="hidden space-y-4">
+        
+        <!-- Encabezado de Estudio -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 flex items-center justify-between">
+          <div>
+            <h2 class="font-duo font-bold text-base sm:text-lg text-white">
+              Guion Completo + Pronunciación
+            </h2>
+            <p class="text-xs text-slate-400">
+              Incluye cómo suena cada frase en español y audio a velocidad normal 🔊 o lenta 🐢.
+            </p>
+          </div>
+          <button onclick="playEntireDialogSequentially()" class="duo-btn duo-blue px-3 py-2 rounded-2xl font-duo font-bold text-xs flex items-center gap-1.5 shrink-0">
+            <i class="fa-solid fa-headphones"></i>
+            <span>Oír Todo</span>
+          </button>
+        </div>
+
+        <!-- Lista de las 6 interacciones completas -->
+        <div id="full-script-container" class="space-y-3">
+          <!-- Renderizado por JS -->
+        </div>
+
+        <!-- Tarjetas de Vocabulario Imprescindible para tu caso -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 space-y-3">
+          <h3 class="font-duo font-bold text-sm text-amber-400 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-key"></i> Palabras Clave de tu Viaje a Dubái
+          </h3>
+          <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- Renderizado por JS -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- =============================================================== -->
+      <!-- VISTA D: COMPARTIR LINK Y COPIAR PROMPT PARA OTRO CHAT           -->
+      <!-- =============================================================== -->
+      <section id="tab-view-share" class="hidden space-y-4">
+        
+        <!-- Tarjeta 1: Compartir esta App con alguien -->
+        <div class="bg-gradient-to-br from-emerald-950/90 to-slate-900 border-2 border-emerald-500/40 rounded-3xl p-4 space-y-3 shadow-lg">
+          <div class="flex items-start gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl shrink-0">
+              📲
+            </div>
+            <div>
+              <h3 class="font-duo font-bold text-base text-white">Compartir esta App para Practicar</h3>
+              <p class="text-xs text-slate-300 mt-0.5 leading-relaxed">
+                Envía el enlace a tu familiar o guárdalo en la pantalla de inicio de tu celular como una aplicación (PWA).
+              </p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+            <button onclick="shareAppLink()" class="py-3 px-4 rounded-2xl duo-btn duo-green font-duo font-bold text-xs uppercase flex items-center justify-center gap-2">
+              <i class="fa-solid fa-share-nodes"></i>
+              <span>Compartir Link / WhatsApp</span>
+            </button>
+            <button onclick="openWelcomeScreen()" class="py-3 px-4 rounded-2xl duo-btn duo-card-btn font-duo font-bold text-xs uppercase flex items-center justify-center gap-2">
+              <i class="fa-solid fa-user-pen text-emerald-400"></i>
+              <span>Cambiar Nombre del Viajero</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjeta 2: Bloque de Prompt exacto listo para copiar y pegar en otro chat -->
+        <div class="bg-slate-900 border-2 border-slate-800 rounded-3xl p-4 space-y-3 shadow-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">📋</span>
+              <div>
+                <h3 class="font-duo font-bold text-sm sm:text-base text-white">Prompt para practicar en otro Chat</h3>
+                <p class="text-[11px] text-slate-400">Listo para copiar con un toque y pegar en ChatGPT, Gemini o Claude</p>
+              </div>
+            </div>
+            <button onclick="copyPromptToClipboard()" class="duo-btn duo-amber px-3.5 py-2 rounded-xl font-duo font-bold text-xs uppercase flex items-center gap-1.5 shrink-0">
+              <i class="fa-regular fa-copy"></i>
+              <span id="copy-prompt-btn-label">Copiar Prompt</span>
+            </button>
+          </div>
+
+          <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 text-xs text-slate-300 font-mono leading-relaxed select-all whitespace-pre-wrap" id="raw-prompt-text">Actúa como un oficial de control migratorio en el Aeropuerto Internacional de Dubái (DXB). Yo seré un pasajero que viaja a visitar a su hijo (que trabaja allí como ingeniero) y a su nieto por aproximadamente un mes.
+Sigue estas reglas para la simulación:
+ * Habla en inglés en tu rol de oficial, con un tono formal y realista.
+ * Haz una sola pregunta a la vez para que podamos mantener un diálogo interactivo.
+ * Si cometo un error en inglés o puedo formular mejor mi respuesta, primero dame una breve corrección o sugerencia en español y luego continúa con la siguiente pregunta en inglés.
+ * Inicia la conversación dándome la bienvenida y pidiendo mi pasaporte.</div>
+        </div>
+
+        <!-- Consejos para instalar como Web App en iPhone / Android -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-4 space-y-2 text-xs text-slate-300">
+          <h4 class="font-duo font-bold text-sky-400 uppercase text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-mobile-screen-button"></i> ¿Cómo instalarla en la pantalla de tu celular?
+          </h4>
+          <p>• <strong>En Android (Chrome):</strong> Toca los 3 puntos arriba a la derecha y elige <em>"Añadir a pantalla de inicio"</em>.</p>
+          <p>• <strong>En iPhone (Safari):</strong> Toca el botón <em>Compartir</em> abajo en el centro y selecciona <em>"Agregar a inicio"</em>.</p>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 5. MODAL DE EJERCICIO INTERACTIVO DUOLINGO (FULLSCREEN EN CELULAR)        -->
+  <!-- ========================================================================= -->
+  <section id="lesson-runner-modal" class="fixed inset-0 z-40 bg-[#0b1120] flex flex-col justify-between hidden" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
+    
+    <!-- Barra superior del ejercicio (Cerrar, Barra de progreso, Vidas) -->
+    <div class="max-w-lg mx-auto w-full px-4 pt-3 pb-2 flex items-center gap-3 shrink-0">
+      <button onclick="closeLessonRunner()" class="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+      <div class="flex-1 bg-slate-800 h-4 rounded-full p-0.5 overflow-hidden border border-slate-700">
+        <div id="runner-progress-bar" class="bg-gradient-to-r from-emerald-500 to-lime-400 h-full rounded-full transition-all duration-300" style="width: 20%;"></div>
+      </div>
+      <div class="flex items-center gap-1 text-rose-500 font-duo font-bold text-sm">
+        <i class="fa-solid fa-heart"></i>
+        <span id="runner-hearts">5</span>
+      </div>
+    </div>
+
+    <!-- Cuerpo del ejercicio actual -->
+    <div class="max-w-lg mx-auto w-full px-4 py-2 flex-1 overflow-y-auto flex flex-col justify-between">
+      
+      <div class="space-y-3">
+        <!-- Etiqueta de tipo de ejercicio -->
+        <div class="flex items-center justify-between">
+          <span id="exercise-badge" class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+            Ejercicio 1 • Ordena la respuesta
+          </span>
+          <span id="exercise-step-label" class="text-xs font-duo font-bold text-slate-400">Paso 1 de 4</span>
+        </div>
+
+        <!-- Pregunta del Oficial con Botón Normal 🔊 y Lento 🐢 -->
+        <div class="bg-slate-900 border-2 border-slate-800 rounded-3xl p-3.5 shadow-lg">
+          <div class="flex items-start gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-slate-800 border border-emerald-500/40 flex items-center justify-center text-2xl shrink-0">
+              🛂
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between gap-1 mb-1">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-400">Oficial de Migración DXB:</span>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="speakCurrentLessonOfficer(0.92)" class="px-2.5 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-1" title="Velocidad normal">
+                    <i class="fa-solid fa-volume-high"></i> Normal
+                  </button>
+                  <button onclick="speakCurrentLessonOfficer(0.62)" class="px-2.5 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1" title="Velocidad lenta">
+                    🐢 Lento
+                  </button>
+                </div>
+              </div>
+              <p id="runner-officer-en" class="text-sm sm:text-base font-extrabold text-white leading-snug"></p>
+              <p id="runner-officer-es" class="text-xs text-slate-400 italic mt-1"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ayuda fonética y traducción de lo que debe responder el usuario -->
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-3 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-amber-400 flex items-center gap-1">
+              <i class="fa-solid fa-bullseye"></i> Tu misión en español:
+            </span>
+            <button onclick="speakCurrentLessonTarget(0.85)" class="text-xs text-sky-400 hover:underline font-bold flex items-center gap-1">
+              <i class="fa-solid fa-ear-listen"></i> Oír mi respuesta en inglés
+            </button>
+          </div>
+          <p id="runner-target-es" class="text-xs sm:text-sm text-slate-200 font-semibold"></p>
+          <p id="runner-target-phonetic" class="text-[11px] text-emerald-300 font-medium"></p>
+        </div>
+
+        <!-- Contenedor Dinámico según el tipo de ejercicio (Word Bank / Multiple Choice / Fill Blank / Voice) -->
+        <div id="runner-interactive-area" class="pt-1 space-y-3">
+          <!-- Renderizado dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Pie de Comprobación y Bandeja de Feedback estilo Duolingo -->
+      <div class="pt-3">
+        <!-- Bandeja emergente cuando responde -->
+        <div id="runner-feedback-box" class="hidden rounded-3xl p-4 mb-2 border-2 transition-all">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start gap-2.5">
+              <div id="runner-fb-icon" class="w-9 h-9 rounded-full flex items-center justify-center text-base font-bold shrink-0 mt-0.5"></div>
+              <div>
+                <h4 id="runner-fb-title" class="font-duo font-bold text-sm sm:text-base"></h4>
+                <p id="runner-fb-message" class="text-xs text-slate-200 mt-0.5 leading-relaxed"></p>
+              </div>
+            </div>
+            <button onclick="speakCurrentLessonTarget(0.85)" class="w-9 h-9 rounded-xl bg-black/30 text-white flex items-center justify-center shrink-0" title="Escuchar respuesta">
+              <i class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+          </div>
+          <button id="runner-continue-btn" onclick="nextExerciseInLesson()" class="w-full mt-3 py-3.5 rounded-2xl duo-btn duo-green font-duo font-bold text-sm uppercase tracking-wider">
+            Continuar
+          </button>
+        </div>
+
+        <!-- Botón Comprobar -->
+        <button id="runner-check-btn" onclick="verifyCurrentExercise()" class="w-full py-4 rounded-2xl duo-btn duo-green font-duo font-bold text-base uppercase tracking-wider">
+          Comprobar Respuesta
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 6. MODAL DE CELEBRACIÓN AL COMPLETAR NIVEL                                -->
+  <!-- ========================================================================= -->
+  <div id="celebration-modal" class="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border-2 border-emerald-500 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+      <div class="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center text-4xl mx-auto animate-bounce">
+        🏆
+      </div>
+      <h3 class="font-duo font-bold text-2xl text-white">
+        ¡Excelente, <span id="celeb-traveler-name">Viajero</span>!
+      </h3>
+      <p id="celeb-subtitle" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+        Dominaste esta etapa del control migratorio de Dubái.
+      </p>
+      <div class="grid grid-cols-2 gap-2.5">
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block">Experiencia</span>
+          <span id="celeb-xp-earned" class="font-duo font-bold text-lg text-sky-400">+30 XP</span>
+        </div>
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block">Pronunciación</span>
+          <span class="font-duo font-bold text-lg text-emerald-400">¡Superada!</span>
+        </div>
+      </div>
+      <button onclick="closeCelebrationModal()" class="w-full py-3.5 rounded-2xl duo-btn duo-green font-duo font-bold text-sm uppercase tracking-wider">
+        Volver al Camino
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7. BARRA DE NAVEGACIÓN INFERIOR FIJA ESTILO APP NATIVA (PWA)              -->
+  <!-- ========================================================================= -->
+  <nav class="fixed bottom-0 inset-x-0 z-30 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-2 pt-1.5" style="padding-bottom: calc(0.45rem + var(--safe-bottom));">
+    <div class="max-w-lg mx-auto grid grid-cols-4 gap-1">
+      
+      <button id="nav-btn-path" onclick="switchBottomTab('path')" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-emerald-400 bg-emerald-500/10 font-duo font-bold text-[11px] transition-all">
+        <i class="fa-solid fa-route text-base mb-0.5"></i>
+        <span>Aprender</span>
+      </button>
+
+      <button id="nav-btn-roleplay" onclick="switchBottomTab('roleplay')" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-white font-duo font-bold text-[11px] transition-all">
+        <i class="fa-solid fa-comments text-base mb-0.5"></i>
+        <span>Diálogo Vivo</span>
+      </button>
+
+      <button id="nav-btn-guide" onclick="switchBottomTab('guide')" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-white font-duo font-bold text-[11px] transition-all">
+        <i class="fa-solid fa-book-open-reader text-base mb-0.5"></i>
+        <span>Guion y Audio</span>
+      </button>
+
+      <button id="nav-btn-share" onclick="switchBottomTab('share')" class="flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-white font-duo font-bold text-[11px] transition-all">
+        <i class="fa-solid fa-share-from-square text-base mb-0.5"></i>
+        <span>Compartir</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- LÓGICA COMPLETA JAVASCRIPT                                                -->
+  <!-- ========================================================================= -->
+  <script>
+    // =========================================================================
+    // 1. BASE DE DATOS DEL DIÁLOGO ADAPTADO A TU CASO EN DUBÁI (HIJO INGENIERO)
+    // =========================================================================
+    const DUBAI_SCENARIOS = [
+      {
+        id: 0,
+        title: "1. Saludo y Pasaporte",
+        subtitle: "Entregar pasaporte y pase de abordar",
+        icon: "🛂",
+        color: "emerald",
+        officerEn: "Good evening. Welcome to Dubai. May I see your passport and boarding pass, please?",
+        officerEs: "Buenas noches. Bienvenido a Dubái. ¿Puedo ver su pasaporte y tarjeta de embarque, por favor?",
+        officerPhonetic: "Gud ívning. Uélcom tu Dubái. Méi ai síi yor pásport and bórding pas, plíis?",
+        userEn: "Good evening, Officer. Here they are.",
+        userEs: "Buenas noches, oficial. Aquí tiene.",
+        userPhonetic: "🔊 Pronunciación: «Gud ívning, Ófiser. Jíir déi ar»",
+        tip: "Cuando entregas dos cosas (pasaporte y tarjeta de embarque), 'Here they are' significa 'Aquí están / Aquí los tiene'.",
+        wordBank: ["Good", "evening,", "Officer.", "Here", "they", "are.", "morning", "passport", "where"],
+        distractors: [
+          "Good morning. I don't have my passport here.",
+          "Thank you very much. See you tomorrow night."
+        ],
+        missingWordQuiz: {
+          sentenceBefore: "Good evening, Officer.",
+          blankCorrect: "Here they are.",
+          sentenceAfter: "",
+          options: ["Here they are.", "Where are you?", "Goodbye officer."]
+        }
+      },
+      {
+        id: 1,
+        title: "2. Motivo del Viaje",
+        subtitle: "Visitar a tu hijo y a tu nieto",
+        icon: "👨‍👦",
+        color: "sky",
+        officerEn: "What is the purpose of your visit to the UAE?",
+        officerEs: "¿Cuál es el motivo de su visita a los Emiratos Árabes Unidos?",
+        officerPhonetic: "Uát is de pórpos of yor vísit tu de Yu-Ei-Í?",
+        userEn: "I am visiting my family—my son and my grandson.",
+        userEs: "Vengo a visitar a mi familia: a mi hijo y a mi nieto.",
+        userPhonetic: "🔊 Pronunciación: «Ai am vísiting mai fámili — mai son and mai grándson»",
+        tip: "Escucharás 'purpose of your visit' (propósito de tu visita) y 'UAE' (Emiratos Árabes Unidos). Mencionar 'my son and my grandson' es claro y cálido.",
+        wordBank: ["I", "am", "visiting", "my", "family—my", "son", "and", "my", "grandson.", "working", "hotel"],
+        distractors: [
+          "I am looking for a job in a company.",
+          "I am only in transit for two hours."
+        ],
+        missingWordQuiz: {
+          sentenceBefore: "I am visiting my family—",
+          blankCorrect: "my son and my grandson.",
+          sentenceAfter: "",
+          options: ["my son and my grandson.", "my boss and office.", "a tourist hotel."]
+        }
+      },
+      {
+        id: 2,
+        title: "3. Tu Hijo en Dubái",
+        subtitle: "Residente legal e Ingeniero",
+        icon: "👷‍♂️",
+        color: "amber",
+        officerEn: "Does your son live here? What does he do in Dubai?",
+        officerEs: "¿Su hijo vive aquí? ¿A qué se dedica en Dubái?",
+        officerPhonetic: "Dás yor son lív jíir? Uát dás ji dú in Dubái?",
+        userEn: "Yes, he lives here on a residence visa. He works as an engineer.",
+        userEs: "Sí, él vive aquí con visa de residencia. Trabaja como ingeniero.",
+        userPhonetic: "🔊 Pronunciación: «Yés, ji lívs jíir on a résidens vísa. Ji uórks as an enyiníir»",
+        tip: "'Residence visa' (visa de residencia) y 'engineer' (ingeniero, suena 'enyiníir') le confirman al oficial que tu hijo está establecido legalmente.",
+        wordBank: ["Yes,", "he", "lives", "here", "on", "a", "residence", "visa.", "He", "works", "as", "an", "engineer.", "student"],
+        distractors: [
+          "No, he does not live in Dubai right now.",
+          "He is on vacation for three days."
+        ],
+        missingWordQuiz: {
+          sentenceBefore: "Yes, he lives here on a residence visa. He works as an",
+          blankCorrect: "engineer.",
+          sentenceAfter: "",
+          options: ["engineer.", "airport.", "passport."]
+        }
+      },
+      {
+        id: 3,
+        title: "4. Estancia y Regreso",
+        subtitle: "Un mes y boleto de vuelta",
+        icon: "🗓️",
+        color: "purple",
+        officerEn: "How long will you be staying, and do you have a return ticket?",
+        officerEs: "¿Cuánto tiempo se quedará y tiene boleto de regreso?",
+        officerPhonetic: "Jáo long uíl yu bi stéying, and du yu jáv a ritórn tíket?",
+        userEn: "I will be staying for about a month. Yes, here is my return ticket.",
+        userEs: "Me quedaré aproximadamente un mes. Sí, aquí está mi boleto de regreso.",
+        userPhonetic: "🔊 Pronunciación: «Ai uíl bi stéying for abáut a mónz. Yés, jíir is mai ritórn tíket»",
+        tip: "'How long' pregunta por duración. 'About a month' = aproximadamente un mes. 'Return ticket' = boleto de regreso.",
+        wordBank: ["I", "will", "be", "staying", "for", "about", "a", "month.", "Yes,", "here", "is", "my", "return", "ticket.", "year"],
+        distractors: [
+          "I will stay forever and I have no ticket.",
+          "Only one night at the airport terminal."
+        ],
+        missingWordQuiz: {
+          sentenceBefore: "I will be staying for",
+          blankCorrect: "about a month.",
+          sentenceAfter: "Yes, here is my return ticket.",
+          options: ["about a month.", "ten years.", "yesterday."]
+        }
+      },
+      {
+        id: 4,
+        title: "5. Alojamiento y Emirates ID",
+        subtitle: "Departamento de tu hijo y documentos",
+        icon: "🏢",
+        color: "cyan",
+        officerEn: "Where will you be staying during your visit?",
+        officerEs: "¿Dónde se hospedará durante su visita?",
+        officerPhonetic: "Uér uíl yu bi stéying dúring yor vísit?",
+        userEn: "I will be staying at my son's apartment. I have his address and a copy of his Emirates ID here if you need it.",
+        userEs: "Me quedaré en el departamento de mi hijo. Tengo su dirección y una copia de su Emirates ID aquí si la necesita.",
+        userPhonetic: "🔊 Pronunciación: «Ai uíl bi stéying at mai sons apártment. Ai jáv jis ádres and a cópi of jis Émireits Ai-Dí jíir if yu níid it»",
+        tip: "Mencionar que llevas impresa la dirección ('his address') y copia de la cédula de residente ('Emirates ID') de tu hijo da máxima confianza en Dubái.",
+        wordBank: ["I", "will", "be", "staying", "at", "my", "son's", "apartment.", "I", "have", "his", "address", "and", "a", "copy", "of", "his", "Emirates", "ID", "here", "if", "you", "need", "it."],
+        distractors: [
+          "I don't know the address of the hotel yet.",
+          "I will sleep at the bus station."
+        ],
+        missingWordQuiz: {
+          sentenceBefore: "I will be staying at my son's apartment. I have his address and a copy of his",
+          blankCorrect: "Emirates ID",
+          sentenceAfter: "here if you need it.",
+          options: ["Emirates ID", "driver car", "luggage bag"]
+        }
+      },
+      {
+        id: 5,
+        title: "6. Escaneo y Despedida",
+        subtitle: "Mirar a la cámara y agradecer",
+        icon: "📸",
+        color: "rose",
+        officerEn: "Please look directly into the camera for the scan... Thank you. Everything is in order. Enjoy your time with your family.",
+        officerEs: "Por favor, mire directamente a la cámara para el escaneo... Gracias. Todo está en orden. Disfrute su tiempo con su familia.",
+        officerPhonetic: "Plíis luk diréctli íntu de cámera for de skán... Zánk yu. Évrizing is in órder. Enyói yor táim uíz yor fámili.",
+        userEn: "Thank you very much. Have a good evening.",
+        userEs: "Muchas gracias. Que tenga una buena noche.",
+        userPhonetic: "🔊 Pronunciación: «Zánk yu véri mách. Jáv a gud ívning»",
+        tip: "Cuando escuches 'look into the camera', mira fijo al lente 3 segundos sin gafas. Luego despídete con una sonrisa.",
+        wordBank: ["Thank", "you", "very", "much.", "Have", "a", "good", "evening.", "Where", "ticket"],
+        distractors: [
+          "Excuse me, where is the airplane?",
+          "No thank you, I want to go back."
+        ],
+        missingWordQuiz: {
+          sentenceBefore: "Thank you very much.",
+          blankCorrect: "Have a good evening.",
+          sentenceAfter: "",
+          options: ["Have a good evening.", "Give me my visa.", "Where is the camera?"]
+        }
+      }
+    ];
+
+    const KEY_VOCABULARY = [
+      { en: "Boarding pass", phonetic: "bórding pas", es: "Tarjeta de embarque / Pase de abordar" },
+      { en: "Purpose of your visit", phonetic: "pórpos of yor vísit", es: "Motivo de su visita" },
+      { en: "My son and my grandson", phonetic: "mai son and mai grándson", es: "Mi hijo y mi nieto" },
+      { en: "Residence visa", phonetic: "résidens vísa", es: "Visa de residencia" },
+      { en: "He works as an engineer", phonetic: "ji uórks as an enyiníir", es: "Él trabaja como ingeniero" },
+      { en: "About a month", phonetic: "abáut a mónz", es: "Aproximadamente un mes" },
+      { en: "Return ticket", phonetic: "ritórn tíket", es: "Boleto de regreso" },
+      { en: "My son's apartment", phonetic: "mai sons apártment", es: "El departamento de mi hijo" },
+      { en: "Copy of his Emirates ID", phonetic: "cópi of jis Émireits Ai-Dí", es: "Copia de su documento de identidad emiratí" },
+      { en: "Look into the camera", phonetic: "luk íntu de cámera", es: "Mire a la cámara (escaneo de iris)" }
+    ];
+
+    // Diapositivas del Tutorial Interactivo
+    const TUTORIAL_SLIDES = [
+      {
+        icon: "🗺️",
+        title: "1. Tu Camino de Aprendizaje",
+        desc: "El diálogo real de migración en Dubái está dividido en 6 círculos (desde el saludo hasta el escaneo de cámara). Toca cualquier círculo para practicar esa situación.",
+        actionHtml: `<div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs text-emerald-300">✨ Cada nivel tiene 4 mini-retos estilo Duolingo para que memorices tu respuesta sin estrés.</div>`
+      },
+      {
+        icon: "🐢",
+        title: "2. Escucha Normal o Lento + Fonética",
+        desc: "En cada pregunta tienes dos botones de voz: 'Normal' y 'Lento 🐢'. Además verás escrito cómo suena en español (ej. «Ai am vísiting mai fámili»).",
+        actionHtml: `<button onclick="speakEnglish('I am visiting my family, my son and my grandson.', 0.72)" class="mx-auto px-4 py-2.5 rounded-xl duo-btn duo-amber font-duo font-bold text-xs flex items-center gap-2"><i class="fa-solid fa-volume-high"></i> Probar audio lento ahora</button>`
+      },
+      {
+        icon: "🎙️",
+        title: "3. Practica con Fichas o con tu Voz",
+        desc: "Primero ordenarás las palabras tocándolas con el dedo. Y al final de cada nivel podrás tocar el micrófono para decir la frase en voz alta.",
+        actionHtml: `<div class="bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs text-slate-300">💡 Si estás en un avión o lugar con ruido, puedes saltar el micrófono o escribir con teclado.</div>`
+      },
+      {
+        icon: "🤖",
+        title: "4. Simulador en Vivo y Compartir",
+        desc: "En la pestaña 'Diálogo Vivo' puedes conversar con el Oficial IA (te corrige en español y te habla en inglés). Y en 'Compartir' puedes enviarle este link a quien quieras.",
+        actionHtml: `<div class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3 text-xs text-emerald-300 font-bold">¡Todo tu progreso se guarda automáticamente en tu celular!</div>`
+      }
+    ];
+
+    // =========================================================================
+    // 2. ESTADO DE LA APLICACIÓN Y PERSISTENCIA
+    // =========================================================================
+    let appState = {
+      travelerName: "Viajero",
+      xp: 0,
+      streak: 1,
+      hearts: 5,
+      completedNodes: []
+    };
+
+    // Estado del Tutorial
+    let currentTutorialSlide = 0;
+
+    // Estado del Runner de Lección (4 ejercicios por nodo o 6 nodos seguidos)
+    let lessonQueue = [];
+    let currentExerciseIndex = 0;
+    let activeScenarioId = 0;
+    let selectedWordChips = [];
+    let selectedMultipleOption = null;
+    let voiceTranscriptCaptured = "";
+
+    // Estado del Simulador en Vivo (Guion o IA Gemini)
+    let simulatorMode = "scripted"; // 'scripted' | 'ai'
+    let simScriptIndex = 0;
+    let aiChatHistory = [];
+
+    // Reconocimiento de Voz y Audio
+    let speechRecognizer = null;
+    let isMicListening = false;
+    let activeMicTarget = "lesson"; // 'lesson' | 'sim'
+    let webAudioCtx = null;
+
+    // =========================================================================
+    // 3. INICIALIZACIÓN AL CARGAR LA PÁGINA
+    // =========================================================================
+    window.addEventListener("DOMContentLoaded", () => {
+      loadSavedState();
+      renderLearningPath();
+      renderFullGuideAndVocab();
+      initVoiceRecognizer();
+      resetSimulatorConversation();
+
+      // Si ya tenía nombre guardado, pre-llenarlo en el input de bienvenida
+      const nameInput = document.getElementById("welcome-name-input");
+      if (appState.travelerName && appState.travelerName !== "Viajero") {
+        nameInput.value = appState.travelerName;
+      }
+    });
+
+    function loadSavedState() {
+      try {
+        const raw = localStorage.getItem("dxb_duo_coach_v2");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          appState = { ...appState, ...parsed };
+        }
+      } catch (e) {
+        console.warn("No se pudo leer estado previo:", e);
+      }
+      refreshTopBarStats();
+    }
+
+    function saveAppState() {
+      try {
+        localStorage.setItem("dxb_duo_coach_v2", JSON.stringify(appState));
+      } catch (e) {}
+      refreshTopBarStats();
+    }
+
+    function refreshTopBarStats() {
+      document.getElementById("top-traveler-name").innerText = appState.travelerName || "Viajero";
+      document.getElementById("celeb-traveler-name").innerText = appState.travelerName || "Viajero";
+      document.getElementById("stat-xp").innerText = `${appState.xp} XP`;
+      document.getElementById("stat-streak").innerText = appState.streak;
+      document.getElementById("stat-hearts").innerText = appState.hearts;
+      document.getElementById("runner-hearts").innerText = appState.hearts;
+      document.getElementById("completed-badge").innerText = `${appState.completedNodes.length}/${DUBAI_SCENARIOS.length} listos`;
+    }
+
+    function refillHearts() {
+      appState.hearts = 5;
+      saveAppState();
+      playSuccessChime();
+      showToast("❤️ ¡Tus 5 corazones han sido recargados!");
+    }
+
+    // =========================================================================
+    // 4. PANTALLA DE BIENVENIDA Y TUTORIAL INTERACTIVO
+    // =========================================================================
+    function setQuickName(name) {
+      document.getElementById("welcome-name-input").value = name;
+      playClickPop();
+    }
+
+    function enterMainApp() {
+      const inputVal = document.getElementById("welcome-name-input").value.trim();
+      if (inputVal) {
+        appState.travelerName = inputVal;
+      }
+      saveAppState();
+      unlockAudioEngine();
+      document.getElementById("welcome-screen").classList.add("hidden");
+      showToast(`¡Bienvenido/a a bordo, ${appState.travelerName}! 🇦🇪`);
+    }
+
+    function openWelcomeScreen() {
+      document.getElementById("welcome-name-input").value = appState.travelerName === "Viajero" ? "" : appState.travelerName;
+      document.getElementById("welcome-screen").classList.remove("hidden");
+    }
+
+    function openTutorial(slideIdx = 0) {
+      currentTutorialSlide = slideIdx;
+      renderTutorialSlide();
+      document.getElementById("tutorial-modal").classList.remove("hidden");
+    }
+
+    function closeTutorial() {
+      document.getElementById("tutorial-modal").classList.add("hidden");
+    }
+
+    function changeTutorialSlide(delta) {
+      playClickPop();
+      const next = currentTutorialSlide + delta;
+      if (next < 0) return;
+      if (next >= TUTORIAL_SLIDES.length) {
+        closeTutorial();
+        return;
+      }
+      currentTutorialSlide = next;
+      renderTutorialSlide();
+    }
+
+    function renderTutorialSlide() {
+      const slide = TUTORIAL_SLIDES[currentTutorialSlide];
+      const body = document.getElementById("tutorial-slide-body");
+      body.innerHTML = `
+        <div class="w-20 h-20 rounded-3xl bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-4xl mx-auto shadow-lg">
+          ${slide.icon}
+        </div>
+        <h4 class="font-duo font-bold text-xl text-white">${slide.title}</h4>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed px-2">${slide.desc}</p>
+        <div class="pt-2">${slide.actionHtml}</div>
+      `;
+
+      // Puntos indicadores
+      const dots = document.getElementById("tutorial-dots");
+      dots.innerHTML = TUTORIAL_SLIDES.map((_, idx) => `
+        <span class="h-2 rounded-full transition-all ${idx === currentTutorialSlide ? 'w-6 bg-emerald-400' : 'w-2 bg-slate-700'}"></span>
+      `).join("");
+
+      document.getElementById("tut-prev-btn").disabled = currentTutorialSlide === 0;
+      document.getElementById("tut-next-btn").innerText = currentTutorialSlide === TUTORIAL_SLIDES.length - 1 ? "¡Entendido!" : "Siguiente";
+    }
+
+    // =========================================================================
+    // 5. MOTOR DE SONIDO (WEB AUDIO API) Y VOZ NATIVA (TTS)
+    // =========================================================================
+    function unlockAudioEngine() {
+      if (!webAudioCtx) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) webAudioCtx = new AudioCtx();
+      }
+      if (webAudioCtx && webAudioCtx.state === "suspended") {
+        webAudioCtx.resume();
+      }
+    }
+
+    function playClickPop() {
+      try {
+        unlockAudioEngine();
+        if (!webAudioCtx) return;
+        const now = webAudioCtx.currentTime;
+        const osc = webAudioCtx.createOscillator();
+        const gain = webAudioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(520, now);
+        gain.gain.setValueAtTime(0.07, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.connect(gain);
+        gain.connect(webAudioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.05);
+      } catch (e) {}
+    }
+
+    function playSuccessChime() {
+      try {
+        unlockAudioEngine();
+        if (!webAudioCtx) return;
+        const now = webAudioCtx.currentTime;
+        const notes = [587.33, 783.99, 1046.50]; // D5, G5, C6
+        notes.forEach((freq, idx) => {
+          const osc = webAudioCtx.createOscillator();
+          const gain = webAudioCtx.createGain();
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+          gain.gain.setValueAtTime(0.16, now + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.32);
+          osc.connect(gain);
+          gain.connect(webAudioCtx.destination);
+          osc.start(now + idx * 0.07);
+          osc.stop(now + idx * 0.07 + 0.32);
+        });
+      } catch (e) {}
+    }
+
+    function playErrorBuzzer() {
+      try {
+        unlockAudioEngine();
+        if (!webAudioCtx) return;
+        const now = webAudioCtx.currentTime;
+        const osc = webAudioCtx.createOscillator();
+        const gain = webAudioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(165, now);
+        osc.frequency.setValueAtTime(130, now + 0.12);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.32);
+        osc.connect(gain);
+        gain.connect(webAudioCtx.destination);
+        osc.start(now);
+        osc.stop(now + 0.32);
+      } catch (e) {}
+    }
+
+    function speakEnglish(text, rate = 0.88) {
+      if (!("speechSynthesis" in window)) {
+        showToast("Tu navegador no soporta lectura de voz.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "en-US";
+      utter.rate = rate;
+      utter.pitch = 1.0;
+
+      const voices = window.speechSynthesis.getVoices();
+      const preferred = voices.find(v => v.lang.startsWith("en") && (v.name.includes("Natural") || v.name.includes("Google") || v.name.includes("Samantha")));
+      if (preferred) utter.voice = preferred;
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    // =========================================================================
+    // 6. RENDERIZADO DEL MAPA DE APRENDIZAJE ESTILO DUOLINGO
+    // =========================================================================
+    function renderLearningPath() {
+      const container = document.getElementById("duolingo-path-container");
+      container.innerHTML = "";
+
+      const offsets = ["translate-x-0", "-translate-x-6", "translate-x-6", "-translate-x-4", "translate-x-5", "translate-x-0"];
+
+      DUBAI_SCENARIOS.forEach((scen, idx) => {
+        const isDone = appState.completedNodes.includes(scen.id);
+        const offsetClass = offsets[idx % offsets.length];
+
+        const nodeWrap = document.createElement("div");
+        nodeWrap.className = `flex flex-col items-center ${offsetClass} relative z-10`;
+
+        const ringColor = isDone
+          ? "bg-emerald-500 border-emerald-300 shadow-[0_6px_0_#15803d]"
+          : "bg-sky-500 border-sky-300 shadow-[0_6px_0_#0369a1]";
+
+        nodeWrap.innerHTML = `
+          <button 
+            onclick="startScenarioNode(${scen.id})"
+            class="path-node w-20 h-20 rounded-full ${ringColor} border-4 flex items-center justify-center text-3xl relative"
+          >
+            <span>${scen.icon}</span>
+            ${isDone ? `<span class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center border-2 border-slate-900 shadow"><i class="fa-solid fa-check"></i></span>` : ``}
+          </button>
+          <div class="mt-2 bg-slate-900/95 border border-slate-800 px-3.5 py-2 rounded-2xl text-center max-w-[230px] shadow-md">
+            <h4 class="font-duo font-bold text-xs sm:text-sm text-white">${scen.title}</h4>
+            <p class="text-[11px] text-slate-400 leading-tight mt-0.5">${scen.subtitle}</p>
+          </div>
+        `;
+
+        container.appendChild(nodeWrap);
+      });
+    }
+
+    // =========================================================================
+    // 7. MOTOR DE LECCIONES DUOLINGO (4 VARIEDADES DE EJERCICIO POR NIVEL)
+    // =========================================================================
+    function startScenarioNode(scenarioId) {
+      playClickPop();
+      activeScenarioId = scenarioId;
+      const scen = DUBAI_SCENARIOS[scenarioId];
+
+      // Creamos una secuencia didáctica de 4 ejercicios para dominar esa pregunta:
+      // 1) Selección Múltiple de respuesta correcta
+      // 2) Completar la pieza clave
+      // 3) Ordenar todas las palabras (Word Bank)
+      // 4) Práctica de Voz / Pronunciación
+      lessonQueue = [
+        { type: "multiple_choice", scenario: scen },
+        { type: "fill_blank", scenario: scen },
+        { type: "word_bank", scenario: scen },
+        { type: "speaking", scenario: scen }
+      ];
+
+      currentExerciseIndex = 0;
+      openLessonRunnerModal();
+    }
+
+    function startFullPracticeLesson() {
+      playClickPop();
+      activeScenarioId = -1; // Examen de las 6 preguntas seguidas
+      lessonQueue = DUBAI_SCENARIOS.map(scen => ({
+        type: "word_bank",
+        scenario: scen
+      }));
+      currentExerciseIndex = 0;
+      openLessonRunnerModal();
+    }
+
+    function openLessonRunnerModal() {
+      document.getElementById("lesson-runner-modal").classList.remove("hidden");
+      loadCurrentExerciseInRunner();
+    }
+
+    function closeLessonRunner() {
+      window.speechSynthesis?.cancel();
+      document.getElementById("lesson-runner-modal").classList.add("hidden");
+    }
+
+    function speakCurrentLessonOfficer(rate = 0.9) {
+      const current = lessonQueue[currentExerciseIndex];
+      if (current) speakEnglish(current.scenario.officerEn, rate);
+    }
+
+    function speakCurrentLessonTarget(rate = 0.85) {
+      const current = lessonQueue[currentExerciseIndex];
+      if (current) speakEnglish(current.scenario.userEn, rate);
+    }
+
+    function loadCurrentExerciseInRunner() {
+      const item = lessonQueue[currentExerciseIndex];
+      const scen = item.scenario;
+
+      // Barra de progreso
+      const progressPct = ((currentExerciseIndex) / lessonQueue.length) * 100;
+      document.getElementById("runner-progress-bar").style.width = `${Math.max(15, progressPct)}%`;
+      document.getElementById("exercise-step-label").innerText = `Paso ${currentExerciseIndex + 1} de ${lessonQueue.length}`;
+
+      // Textos del oficial y misión
+      document.getElementById("runner-officer-en").innerText = `"${scen.officerEn}"`;
+      document.getElementById("runner-officer-es").innerText = `(${scen.officerEs})`;
+      document.getElementById("runner-target-es").innerText = `"${scen.userEs}"`;
+      document.getElementById("runner-target-phonetic").innerText = scen.userPhonetic;
+
+      // Ocultar feedback anterior
+      document.getElementById("runner-feedback-box").classList.add("hidden");
+      document.getElementById("runner-check-btn").classList.remove("hidden");
+
+      const area = document.getElementById("runner-interactive-area");
+      area.innerHTML = "";
+
+      selectedWordChips = [];
+      selectedMultipleOption = null;
+      voiceTranscriptCaptured = "";
+
+      if (item.type === "multiple_choice") {
+        document.getElementById("exercise-badge").innerText = "1. Escoge la respuesta correcta";
+        renderMultipleChoiceExercise(area, scen);
+      } else if (item.type === "fill_blank") {
+        document.getElementById("exercise-badge").innerText = "2. Completa los datos de tu viaje";
+        renderFillBlankExercise(area, scen);
+      } else if (item.type === "word_bank") {
+        document.getElementById("exercise-badge").innerText = "3. Arma la frase palabra por palabra";
+        renderWordBankExercise(area, scen);
+      } else if (item.type === "speaking") {
+        document.getElementById("exercise-badge").innerText = "4. Pronuncia tu respuesta en voz alta";
+        renderSpeakingExercise(area, scen);
+      }
+
+      // Reproducir voz del oficial automáticamente
+      setTimeout(() => speakCurrentLessonOfficer(0.88), 250);
+    }
+
+    // --- EJERCICIO TIPO 1: SELECCIÓN MÚLTIPLE ---
+    function renderMultipleChoiceExercise(area, scen) {
+      const options = [scen.userEn, ...scen.distractors].sort(() => Math.random() - 0.5);
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "space-y-2.5";
+
+      options.forEach((optText) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "mc-option-btn w-full text-left p-3.5 rounded-2xl duo-card-btn font-bold text-xs sm:text-sm flex items-center justify-between gap-2";
+        btn.innerHTML = `
+          <span>"${optText}"</span>
+          <i class="fa-regular fa-circle text-slate-400"></i>
+        `;
+        btn.onclick = () => {
+          playClickPop();
+          selectedMultipleOption = optText;
+          speakEnglish(optText, 0.9);
+          document.querySelectorAll(".mc-option-btn").forEach(b => {
+            b.classList.remove("selected");
+            b.querySelector("i").className = "fa-regular fa-circle text-slate-400";
+          });
+          btn.classList.add("selected");
+          btn.querySelector("i").className = "fa-solid fa-circle-check text-cyan-300";
+        };
+        wrapper.appendChild(btn);
+      });
+
+      area.appendChild(wrapper);
+    }
+
+    // --- EJERCICIO TIPO 2: COMPLETAR LA FRASE CLAVE ---
+    function renderFillBlankExercise(area, scen) {
+      const quiz = scen.missingWordQuiz;
+      const box = document.createElement("div");
+      box.className = "space-y-3";
+
+      box.innerHTML = `
+        <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-4 text-sm sm:text-base font-bold text-white leading-relaxed">
+          <span>${quiz.sentenceBefore} </span>
+          <span id="blank-slot-preview" class="inline-block px-3 py-1 rounded-xl bg-sky-500/20 border-b-2 border-sky-400 text-sky-300 mx-1">______</span>
+          <span> ${quiz.sentenceAfter}</span>
+        </div>
+        <div class="grid grid-cols-1 gap-2" id="fill-options-list"></div>
+      `;
+      area.appendChild(box);
+
+      const list = box.querySelector("#fill-options-list");
+      quiz.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "fill-opt-btn p-3.5 rounded-2xl duo-card-btn font-duo font-bold text-sm text-center";
+        btn.innerText = opt;
+        btn.onclick = () => {
+          playClickPop();
+          selectedMultipleOption = opt;
+          speakEnglish(opt, 0.9);
+          document.getElementById("blank-slot-preview").innerText = opt;
+          document.querySelectorAll(".fill-opt-btn").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+        };
+        list.appendChild(btn);
+      });
+    }
+
+    // --- EJERCICIO TIPO 3: ORDENAR FICHAS DE PALABRAS (WORD BANK) ---
+    function renderWordBankExercise(area, scen) {
+      area.innerHTML = `
+        <div id="wb-dropzone" class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-3 min-h-[78px] flex flex-wrap gap-1.5 items-center">
+          <span class="text-xs text-slate-500 italic">Toca las palabras en orden para formar tu respuesta...</span>
+        </div>
+        <div id="wb-pool" class="flex flex-wrap gap-2 justify-center pt-1"></div>
+      `;
+
+      const pool = area.querySelector("#wb-pool");
+      const shuffled = [...scen.wordBank].sort(() => Math.random() - 0.5);
+
+      shuffled.forEach((word) => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "px-3 py-2 rounded-xl duo-card-btn font-bold text-xs sm:text-sm";
+        chip.innerText = word;
+        chip.onclick = () => {
+          playClickPop();
+          selectedWordChips.push({ word, buttonRef: chip });
+          chip.classList.add("opacity-25", "pointer-events-none");
+          refreshWordBankDropzone();
+        };
+        pool.appendChild(chip);
+      });
+    }
+
+    function refreshWordBankDropzone() {
+      const zone = document.getElementById("wb-dropzone");
+      if (!zone) return;
+      zone.innerHTML = "";
+
+      if (selectedWordChips.length === 0) {
+        zone.innerHTML = `<span class="text-xs text-slate-500 italic">Toca las palabras en orden para formar tu respuesta...</span>`;
+        return;
+      }
+
+      selectedWordChips.forEach((item, idx) => {
+        const pill = document.createElement("button");
+        pill.type = "button";
+        pill.className = "px-3 py-1.5 rounded-xl bg-emerald-500/20 border-2 border-emerald-400 text-emerald-200 font-bold text-xs sm:text-sm flex items-center gap-1.5";
+        pill.innerHTML = `<span>${item.word}</span><i class="fa-solid fa-xmark text-[10px]"></i>`;
+        pill.onclick = () => {
+          playClickPop();
+          item.buttonRef.classList.remove("opacity-25", "pointer-events-none");
+          selectedWordChips.splice(idx, 1);
+          refreshWordBankDropzone();
+        };
+        zone.appendChild(pill);
+      });
+    }
+
+    // --- EJERCICIO TIPO 4: PRÁCTICA DE PRONUNCIACIÓN / VOZ ---
+    function renderSpeakingExercise(area, scen) {
+      area.innerHTML = `
+        <div class="bg-slate-950 border-2 border-slate-800 rounded-3xl p-4 text-center space-y-3">
+          <p class="text-xs text-slate-400">Lee en voz alta esta frase en inglés:</p>
+          <p class="text-base sm:text-lg font-extrabold text-emerald-400 leading-snug">"${scen.userEn}"</p>
+          
+          <div class="flex justify-center gap-3 pt-1">
+            <button type="button" onclick="speakCurrentLessonTarget(0.65)" class="px-3.5 py-2 rounded-xl bg-slate-800 text-amber-300 text-xs font-bold flex items-center gap-1.5 border border-slate-700">
+              🐢 Oír lento
+            </button>
+            <button type="button" id="lesson-mic-btn" onclick="toggleSpeechRecognition('lesson')" class="px-5 py-3 rounded-2xl duo-btn duo-rose font-duo font-bold text-xs uppercase flex items-center gap-2">
+              <i class="fa-solid fa-microphone text-sm"></i>
+              <span>Tocar y Hablar</span>
+            </button>
+          </div>
+
+          <input 
+            id="speaking-fallback-input"
+            type="text"
+            placeholder="Lo que digas aparecerá aquí (o escríbelo)..."
+            oninput="voiceTranscriptCaptured = this.value"
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-center text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400"
+          />
+        </div>
+      `;
+    }
+
+    // --- VERIFICACIÓN DEL EJERCICIO ACTUAL ---
+    function normalizeText(str) {
+      return (str || "")
+        .toLowerCase()
+        .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()—?"']/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function verifyCurrentExercise() {
+      const item = lessonQueue[currentExerciseIndex];
+      const scen = item.scenario;
+      let isCorrect = false;
+
+      if (item.type === "multiple_choice") {
+        if (!selectedMultipleOption) {
+          showToast("Selecciona una opción primero.");
+          return;
+        }
+        isCorrect = normalizeText(selectedMultipleOption) === normalizeText(scen.userEn);
+      } else if (item.type === "fill_blank") {
+        if (!selectedMultipleOption) {
+          showToast("Toca una de las opciones para completar la frase.");
+          return;
+        }
+        isCorrect = normalizeText(selectedMultipleOption) === normalizeText(scen.missingWordQuiz.blankCorrect);
+      } else if (item.type === "word_bank") {
+        if (selectedWordChips.length === 0) {
+          showToast("Toca las fichas de palabras para armar tu respuesta.");
+          return;
+        }
+        const userBuilt = selectedWordChips.map(i => i.word).join(" ");
+        const cleanUser = normalizeText(userBuilt);
+        const cleanTarget = normalizeText(scen.userEn);
+        const targetWords = cleanTarget.split(" ");
+        const matches = targetWords.filter(w => cleanUser.includes(w)).length;
+        isCorrect = cleanUser === cleanTarget || (matches / targetWords.length) >= 0.78;
+      } else if (item.type === "speaking") {
+        const inputVal = document.getElementById("speaking-fallback-input")?.value || voiceTranscriptCaptured;
+        if (!inputVal.trim()) {
+          // Si está en lugar sin micrófono, permitir aprobar escuchando la frase
+          isCorrect = true;
+        } else {
+          const cleanUser = normalizeText(inputVal);
+          const cleanTarget = normalizeText(scen.userEn);
+          const targetWords = cleanTarget.split(" ");
+          const matches = targetWords.filter(w => cleanUser.includes(w)).length;
+          isCorrect = (matches / targetWords.length) >= 0.55;
+        }
+      }
+
+      showExerciseFeedback(isCorrect, scen);
+    }
+
+    function showExerciseFeedback(isCorrect, scen) {
+      const box = document.getElementById("runner-feedback-box");
+      const icon = document.getElementById("runner-fb-icon");
+      const title = document.getElementById("runner-fb-title");
+      const msg = document.getElementById("runner-fb-message");
+      const contBtn = document.getElementById("runner-continue-btn");
+
+      document.getElementById("runner-check-btn").classList.add("hidden");
+      box.classList.remove("hidden");
+
+      if (isCorrect) {
+        playSuccessChime();
+        appState.xp += 10;
+        saveAppState();
+
+        box.className = "rounded-3xl p-4 mb-2 border-2 bg-emerald-950/90 border-emerald-500";
+        icon.className = "w-9 h-9 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center text-base font-bold shrink-0";
+        icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
+        title.className = "font-duo font-bold text-sm sm:text-base text-emerald-300";
+        title.innerText = `¡Muy bien, ${appState.travelerName}! (+10 XP)`;
+        msg.innerHTML = `<strong>"${scen.userEn}"</strong><br><span class="text-emerald-200 text-[11px]">💡 ${scen.tip}</span>`;
+        contBtn.className = "w-full mt-3 py-3.5 rounded-2xl duo-btn duo-green font-duo font-bold text-sm uppercase tracking-wider";
+        speakEnglish(scen.userEn, 0.9);
+      } else {
+        playErrorBuzzer();
+        appState.hearts = Math.max(1, appState.hearts - 1);
+        saveAppState();
+
+        box.className = "rounded-3xl p-4 mb-2 border-2 bg-rose-950/90 border-rose-500";
+        icon.className = "w-9 h-9 rounded-full bg-rose-500 text-white flex items-center justify-center text-base font-bold shrink-0";
+        icon.innerHTML = `<i class="fa-solid fa-lightbulb"></i>`;
+        title.className = "font-duo font-bold text-sm sm:text-base text-rose-300";
+        title.innerText = "Casi, mira cómo se responde:";
+        msg.innerHTML = `Respuesta ideal: <strong>"${scen.userEn}"</strong><br><span class="text-slate-300 text-[11px]">(${scen.userEs})</span>`;
+        contBtn.className = "w-full mt-3 py-3.5 rounded-2xl duo-btn duo-amber font-duo font-bold text-sm uppercase tracking-wider";
+        speakEnglish(scen.userEn, 0.82);
+      }
+    }
+
+    function nextExerciseInLesson() {
+      playClickPop();
+      if (currentExerciseIndex + 1 < lessonQueue.length) {
+        currentExerciseIndex++;
+        loadCurrentExerciseInRunner();
+      } else {
+        // Completó el nodo
+        if (activeScenarioId >= 0 && !appState.completedNodes.includes(activeScenarioId)) {
+          appState.completedNodes.push(activeScenarioId);
+        } else if (activeScenarioId === -1) {
+          appState.completedNodes = DUBAI_SCENARIOS.map(s => s.id);
+        }
+        appState.xp += 20;
+        saveAppState();
+        renderLearningPath();
+        closeLessonRunner();
+        playSuccessChime();
+        document.getElementById("celebration-modal").classList.remove("hidden");
+      }
+    }
+
+    function closeCelebrationModal() {
+      document.getElementById("celebration-modal").classList.add("hidden");
+    }
+
+    // =========================================================================
+    // 8. SIMULADOR DE DIÁLOGO EN VIVO (MODO GUIADO 6 PASOS + MODO IA GEMINI)
+    // =========================================================================
+    function setSimulatorMode(mode) {
+      playClickPop();
+      simulatorMode = mode;
+      const btnScripted = document.getElementById("sim-mode-scripted");
+      const btnAi = document.getElementById("sim-mode-ai");
+
+      if (mode === "scripted") {
+        btnScripted.className = "py-2 px-2 rounded-xl font-duo font-bold bg-emerald-500 text-slate-950 transition-all";
+        btnAi.className = "py-2 px-2 rounded-xl font-duo font-bold text-slate-400 hover:text-white transition-all";
+      } else {
+        btnAi.className = "py-2 px-2 rounded-xl font-duo font-bold bg-sky-400 text-slate-950 transition-all";
+        btnScripted.className = "py-2 px-2 rounded-xl font-duo font-bold text-slate-400 hover:text-white transition-all";
+      }
+      resetSimulatorConversation();
+    }
+
+    function resetSimulatorConversation() {
+      simScriptIndex = 0;
+      aiChatHistory = [];
+      const box = document.getElementById("sim-chat-box");
+      if (!box) return;
+      box.innerHTML = "";
+
+      const first = DUBAI_SCENARIOS[0];
+      appendOfficerChatBubble(first.officerEn, first.officerEs);
+      updateSimSuggestionBar();
+    }
+
+    function updateSimSuggestionBar() {
+      const sugText = document.getElementById("sim-suggested-text");
+      if (simScriptIndex < DUBAI_SCENARIOS.length) {
+        sugText.innerText = `"${DUBAI_SCENARIOS[simScriptIndex].userEn}"`;
+      } else {
+        sugText.innerText = `"Thank you very much. Have a good evening."`;
+      }
+    }
+
+    function speakCurrentSuggestion(rate = 0.88) {
+      const idx = Math.min(simScriptIndex, DUBAI_SCENARIOS.length - 1);
+      speakEnglish(DUBAI_SCENARIOS[idx].userEn, rate);
+    }
+
+    function useSuggestedInRoleplay() {
+      const idx = Math.min(simScriptIndex, DUBAI_SCENARIOS.length - 1);
+      document.getElementById("sim-user-input").value = DUBAI_SCENARIOS[idx].userEn;
+    }
+
+    function appendOfficerChatBubble(enText, esTranslation = "", coachCorrectionEs = "") {
+      const box = document.getElementById("sim-chat-box");
+      const wrap = document.createElement("div");
+      wrap.className = "space-y-1.5 max-w-[92%]";
+
+      const safeEn = enText.replace(/'/g, "\\'");
+
+      wrap.innerHTML = `
+        ${coachCorrectionEs ? `
+          <div class="bg-amber-500/15 border border-amber-500/40 rounded-2xl p-2.5 text-xs text-amber-200">
+            <span class="font-extrabold text-amber-400 block mb-0.5"><i class="fa-solid fa-graduation-cap mr-1"></i>Feedback del Coach en Español:</span>
+            ${coachCorrectionEs}
+          </div>
+        ` : ``}
+        <div class="flex items-start gap-2">
+          <div class="w-8 h-8 rounded-xl bg-slate-800 border border-emerald-500/40 flex items-center justify-center text-sm shrink-0">🛂</div>
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl rounded-tl-none p-3">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <span class="text-[10px] font-extrabold uppercase text-emerald-400">Oficial DXB</span>
+              <div class="flex gap-1.5">
+                <button onclick="speakEnglish('${safeEn}', 0.88)" class="text-xs text-emerald-400 hover:underline font-bold"><i class="fa-solid fa-volume-high"></i></button>
+                <button onclick="speakEnglish('${safeEn}', 0.62)" class="text-xs text-amber-300 hover:underline font-bold">🐢</button>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm font-bold text-white leading-relaxed">"${enText}"</p>
+            ${esTranslation ? `<p class="text-[11px] text-slate-400 italic mt-1">(${esTranslation})</p>` : ``}
+          </div>
+        </div>
+      `;
+      box.appendChild(wrap);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function appendUserChatBubble(userText) {
+      const box = document.getElementById("sim-chat-box");
+      const wrap = document.createElement("div");
+      wrap.className = "flex items-start justify-end gap-2 max-w-[90%] ml-auto";
+      wrap.innerHTML = `
+        <div class="bg-emerald-600 text-white rounded-2xl rounded-tr-none p-3 text-right">
+          <span class="text-[10px] font-extrabold uppercase text-emerald-100 block mb-0.5">${appState.travelerName}</span>
+          <p class="text-xs sm:text-sm font-bold leading-relaxed">"${userText}"</p>
+        </div>
+      `;
+      box.appendChild(wrap);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function sendSimulatorMessage() {
+      const input = document.getElementById("sim-user-input");
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = "";
+      appendUserChatBubble(text);
+      playClickPop();
+
+      if (simulatorMode === "scripted") {
+        handleScriptedTurn(text);
+      } else {
+        await handleAiRoleplayTurn(text);
+      }
+    }
+
+    function handleScriptedTurn(userText) {
+      const currentScen = DUBAI_SCENARIOS[simScriptIndex];
+      if (!currentScen) return;
+
+      const cleanU = normalizeText(userText);
+      const cleanT = normalizeText(currentScen.userEn);
+      const targetWords = cleanT.split(" ");
+      const matched = targetWords.filter(w => cleanU.includes(w)).length;
+      const ratio = matched / targetWords.length;
+
+      let feedbackEs = "";
+      if (ratio >= 0.7) {
+        feedbackEs = `¡Excelente respuesta! Dijiste muy bien la idea clave.`;
+        playSuccessChime();
+      } else {
+        feedbackEs = `Se entendió tu intención. Para sonar aún más natural en Dubái puedes decir: <strong>"${currentScen.userEn}"</strong> (${currentScen.userEs}).`;
+      }
+
+      simScriptIndex++;
+      updateSimSuggestionBar();
+
+      setTimeout(() => {
+        if (simScriptIndex < DUBAI_SCENARIOS.length) {
+          const nextScen = DUBAI_SCENARIOS[simScriptIndex];
+          appendOfficerChatBubble(nextScen.officerEn, nextScen.officerEs, feedbackEs);
+          speakEnglish(nextScen.officerEn, 0.88);
+        } else {
+          appendOfficerChatBubble(
+            "Welcome to Dubai! Your passport is stamped. Have a wonderful month with your son and grandson.",
+            "¡Bienvenido a Dubái! Su pasaporte está sellado. Que pase un mes maravilloso con su hijo y su nieto.",
+            feedbackEs + " 🎉 ¡Completaste toda la entrevista de migración!"
+          );
+          speakEnglish("Welcome to Dubai! Have a wonderful month with your son and grandson.", 0.88);
+        }
+      }, 650);
+    }
+
+    // Llamada al modelo Gemini siguiendo exactamente el prompt de migración de Dubái
+    async function handleAiRoleplayTurn(userText) {
+      const sendBtn = document.getElementById("sim-send-btn");
+      sendBtn.disabled = true;
+      sendBtn.innerText = "...";
+
+      const systemPrompt = `Actúa como un oficial de control migratorio en el Aeropuerto Internacional de Dubái (DXB). El usuario es un pasajero llamado ${appState.travelerName} que viaja a visitar a su hijo (que trabaja allí como ingeniero con visa de residencia) y a su nieto por aproximadamente un mes, quedándose en el departamento de su hijo con copia de su Emirates ID.
+Devuelve SIEMPRE un JSON con estas 3 propiedades:
+- "correctionEs": Una breve felicitación o sugerencia/corrección amable en español sobre lo que acaba de responder el pasajero.
+- "officerNextEn": Tu siguiente pregunta o respuesta formal en inglés (haz solo una pregunta a la vez siguiendo el flujo: 1. Pasaporte, 2. Motivo de visita, 3. A qué se dedica su hijo, 4. Tiempo de estancia y boleto de regreso, 5. Dirección/Emirates ID, 6. Mirar a la cámara y bienvenida final).
+- "officerNextEs": La traducción al español de lo que dijiste en inglés.`;
+
+      aiChatHistory.push({ role: "user", parts: [{ text: userText }] });
+
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: aiChatHistory,
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "OBJECT",
+            properties: {
+              correctionEs: { type: "STRING" },
+              officerNextEn: { type: "STRING" },
+              officerNextEs: { type: "STRING" }
+            },
+            propertyOrdering: ["correctionEs", "officerNextEn", "officerNextEs"]
+          }
+        }
+      };
+
+      try {
+        const res = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        const rawJson = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        const parsed = JSON.parse(rawJson);
+
+        aiChatHistory.push({ role: "model", parts: [{ text: parsed.officerNextEn }] });
+        simScriptIndex = Math.min(simScriptIndex + 1, DUBAI_SCENARIOS.length - 1);
+        updateSimSuggestionBar();
+
+        appendOfficerChatBubble(parsed.officerNextEn, parsed.officerNextEs, parsed.correctionEs);
+        speakEnglish(parsed.officerNextEn, 0.88);
+      } catch (err) {
+        // Fallback automático al guion si no hay internet
+        handleScriptedTurn(userText);
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.innerText = "Enviar";
+      }
+    }
+
+    // =========================================================================
+    // 9. GUION COMPLETO Y VOCABULARIO CON PRONUNCIACIÓN
+    // =========================================================================
+    function renderFullGuideAndVocab() {
+      const scriptContainer = document.getElementById("full-script-container");
+      scriptContainer.innerHTML = "";
+
+      DUBAI_SCENARIOS.forEach((scen) => {
+        const safeOff = scen.officerEn.replace(/'/g, "\\'");
+        const safeUsr = scen.userEn.replace(/'/g, "\\'");
+
+        const card = document.createElement("div");
+        card.className = "bg-slate-900 border-2 border-slate-800 rounded-3xl p-4 space-y-3";
+        card.innerHTML = `
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <span class="font-duo font-bold text-sm text-amber-400">${scen.icon} ${scen.title}</span>
+            <button onclick="startScenarioNode(${scen.id})" class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-xl font-bold">
+              Practicar este paso
+            </button>
+          </div>
+
+          <!-- Parte del Oficial -->
+          <div class="bg-slate-950/80 rounded-2xl p-3 border border-slate-800/80 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-extrabold uppercase text-slate-400">🛂 Oficial:</span>
+              <div class="flex gap-1.5">
+                <button onclick="speakEnglish('${safeOff}', 0.88)" class="px-2 py-0.5 rounded-lg bg-slate-800 text-emerald-400 text-xs font-bold"><i class="fa-solid fa-volume-high"></i> Normal</button>
+                <button onclick="speakEnglish('${safeOff}', 0.62)" class="px-2 py-0.5 rounded-lg bg-slate-800 text-amber-300 text-xs font-bold">🐢 Lento</button>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm font-bold text-white">"${scen.officerEn}"</p>
+            <p class="text-[11px] text-slate-400 italic">(${scen.officerEs})</p>
+          </div>
+
+          <!-- Parte de Tu Respuesta -->
+          <div class="bg-emerald-950/30 rounded-2xl p-3 border border-emerald-500/30 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-extrabold uppercase text-emerald-400">👤 Tu Respuesta:</span>
+              <div class="flex gap-1.5">
+                <button onclick="speakEnglish('${safeUsr}', 0.88)" class="px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-bold"><i class="fa-solid fa-volume-high"></i> Normal</button>
+                <button onclick="speakEnglish('${safeUsr}', 0.62)" class="px-2 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 text-xs font-bold">🐢 Lento</button>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm font-extrabold text-emerald-300">"${scen.userEn}"</p>
+            <p class="text-[11px] text-amber-200 font-semibold">${scen.userPhonetic}</p>
+            <p class="text-[11px] text-slate-300 italic">(${scen.userEs})</p>
+          </div>
+        `;
+        scriptContainer.appendChild(card);
+      });
+
+      // Vocabulario Clave
+      const vocabGrid = document.getElementById("vocab-grid");
+      vocabGrid.innerHTML = "";
+      KEY_VOCABULARY.forEach(item => {
+        const safeWord = item.en.replace(/'/g, "\\'");
+        const vCard = document.createElement("button");
+        vCard.type = "button";
+        vCard.onclick = () => speakEnglish(item.en, 0.82);
+        vCard.className = "text-left bg-slate-950 hover:bg-slate-800/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between gap-2 transition-colors";
+        vCard.innerHTML = `
+          <div>
+            <p class="text-xs sm:text-sm font-extrabold text-white">${item.en}</p>
+            <p class="text-[11px] text-emerald-400 font-semibold">«${item.phonetic}»</p>
+            <p class="text-[11px] text-slate-400">${item.es}</p>
+          </div>
+          <span class="w-8 h-8 rounded-xl bg-slate-900 text-emerald-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-volume-high text-xs"></i>
+          </span>
+        `;
+        vocabGrid.appendChild(vCard);
+      });
+    }
+
+    function playEntireDialogSequentially() {
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      showToast("🎧 Reproduciendo todo el diálogo de principio a fin...");
+
+      DUBAI_SCENARIOS.forEach((scen) => {
+        const u1 = new SpeechSynthesisUtterance(scen.officerEn);
+        u1.lang = "en-US";
+        u1.rate = 0.85;
+        const u2 = new SpeechSynthesisUtterance(scen.userEn);
+        u2.lang = "en-US";
+        u2.rate = 0.85;
+        window.speechSynthesis.speak(u1);
+        window.speechSynthesis.speak(u2);
+      });
+    }
+
+    // =========================================================================
+    // 10. RECONOCIMIENTO DE VOZ (SPEECH TO TEXT)
+    // =========================================================================
+    function initVoiceRecognizer() {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) return;
+
+      speechRecognizer = new SR();
+      speechRecognizer.lang = "en-US";
+      speechRecognizer.continuous = false;
+      speechRecognizer.interimResults = false;
+
+      speechRecognizer.onstart = () => {
+        isMicListening = true;
+        updateMicVisuals(true);
+      };
+
+      speechRecognizer.onend = () => {
+        isMicListening = false;
+        updateMicVisuals(false);
+      };
+
+      speechRecognizer.onerror = () => {
+        isMicListening = false;
+        updateMicVisuals(false);
+        showToast("No se detectó el micrófono. Puedes escribir o usar las fichas.");
+      };
+
+      speechRecognizer.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        if (activeMicTarget === "lesson") {
+          voiceTranscriptCaptured = transcript;
+          const inp = document.getElementById("speaking-fallback-input");
+          if (inp) inp.value = transcript;
+        } else {
+          const simInp = document.getElementById("sim-user-input");
+          if (simInp) simInp.value = transcript;
+        }
+      };
+    }
+
+    function toggleSpeechRecognition(target) {
+      activeMicTarget = target;
+      if (!speechRecognizer) {
+        showToast("Tu navegador no permite micrófono directo. Usa el teclado o fichas.");
+        return;
+      }
+      if (isMicListening) {
+        speechRecognizer.stop();
+      } else {
+        try {
+          speechRecognizer.start();
+        } catch (e) {
+          speechRecognizer.stop();
+        }
+      }
+    }
+
+    function updateMicVisuals(recording) {
+      const btn1 = document.getElementById("lesson-mic-btn");
+      const btn2 = document.getElementById("sim-mic-btn");
+      if (recording) {
+        btn1?.classList.add("mic-recording");
+        btn2?.classList.add("mic-recording");
+      } else {
+        btn1?.classList.remove("mic-recording");
+        btn2?.classList.remove("mic-recording");
+      }
+    }
+
+    // =========================================================================
+    // 11. NAVEGACIÓN INFERIOR Y FUNCIONES DE COMPARTIR / COPIAR PROMPT
+    // =========================================================================
+    function switchBottomTab(tabName) {
+      playClickPop();
+      const tabs = ["path", "roleplay", "guide", "share"];
+      tabs.forEach(t => {
+        document.getElementById(`tab-view-${t}`).classList.add("hidden");
+        const btn = document.getElementById(`nav-btn-${t}`);
+        btn.className = "flex flex-col items-center justify-center py-1.5 rounded-2xl text-slate-400 hover:text-white font-duo font-bold text-[11px] transition-all";
+      });
+
+      document.getElementById(`tab-view-${tabName}`).classList.remove("hidden");
+      document.getElementById(`nav-btn-${tabName}`).className = "flex flex-col items-center justify-center py-1.5 rounded-2xl text-emerald-400 bg-emerald-500/10 font-duo font-bold text-[11px] transition-all";
+    }
+
+    function copyPromptToClipboard() {
+      const promptText = document.getElementById("raw-prompt-text").innerText;
+      const tempArea = document.createElement("textarea");
+      tempArea.value = promptText;
+      document.body.appendChild(tempArea);
+      tempArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempArea);
+
+      playSuccessChime();
+      const label = document.getElementById("copy-prompt-btn-label");
+      label.innerText = "¡Copiado!";
+      showToast("📋 Prompt copiado al portapapeles. Ya puedes pegarlo en cualquier chat.");
+      setTimeout(() => {
+        label.innerText = "Copiar Prompt";
+      }, 2500);
+    }
+
+    async function shareAppLink() {
+      const shareData = {
+        title: "Dubai Border Coach • Práctica de Inglés",
+        text: `Practica el diálogo de migración en Dubái (visita a hijo ingeniero y nieto) estilo Duolingo:`,
+        url: window.location.href
+      };
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (err) {}
+      }
+      // Fallback: copiar URL actual
+      const tempInput = document.createElement("textarea");
+      tempInput.value = window.location.href;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+      showToast("🔗 Enlace copiado para que lo pegues en WhatsApp.");
+    }
+
+    function showToast(message) {
+      const existing = document.getElementById("app-toast");
+      if (existing) existing.remove();
+
+      const div = document.createElement("div");
+      div.id = "app-toast";
+      div.className = "fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-slate-900 border-2 border-emerald-500/60 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-2xl flex items-center gap-2 max-w-[92vw] text-center";
+      div.innerHTML = `<span>${message}</span>`;
+      document.body.appendChild(div);
+
+      setTimeout(() => div.remove(), 3000);
+    }
+  </script>
+</body>
+</html>
